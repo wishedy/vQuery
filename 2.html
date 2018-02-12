@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>2</title>
+    <style>
+        #div1{
+            width:100px;
+            height:100px;
+            background:#ff0000;
+            border:1px solid #333;
+            margin:2rem auto;
+        }
+    </style>
+    <script type="text/javascript" src="js/Fquery.js"></script>
+    <script type="text/javascript">
+        $f(function(){
+            $f("#btn1").click(function(){
+                $f("#div1").show();
+            });
+            $f("#btn2").click(function(){
+                $f("#div1").hide();
+            });
+            $f("#div1").hover(function(){
+                document.title = 'over';
+            },function(){
+                document.title = 'out';
+            })
+        })
+    </script>
+</head>
+<body>
+<input type="button" id="btn1" value="显示">
+<input type="button"  id="btn2" value="隐藏">
+<div id="div1"></div>
+</body>
+</html>

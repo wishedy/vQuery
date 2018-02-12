@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v2</title>
+    <script type="text/javascript" src="js/Fquery.js"></script>
+    <script type="text/javascript">
+        $f(function(){
+            $f("input").toggle(function(){
+                console.log("a");
+            },function(){
+                console.log("b");
+            },function(){
+                console.log("c");
+            });
+            console.log($f("input").eq(0))
+        })
+    </script>
+</head>
+<body>
+<input type="button" id="btn1" value="按钮1"/>
+<input type="button" id="btn2" value="按钮2"/>
+<input type="button" id="btn3" value="按钮3"/>
+<input type="button" id="btn4" value="按钮4"/>
+</body>
+</html>

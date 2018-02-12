@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1</title>
+    <script type="text/javascript" src="js/jquery-1.11.2.js"></script>
+    <script type="text/javascript" src="js/Fquery.js"></script>
+    <script type="text/javascript">
+        /*window.onload = function(){
+            var oBtn = document.getElementById("btn1");
+            oBtn.onclick = function(){
+                console.log(1);
+            }
+        }*/
+        /*jq当中的$代表一个函数，括号内的东西，都是传给他的函数，还可以接收字符串和对象，字符串一般包括#xxxx,.xxxxx,xxxx;*/
+        $f(function(){
+            console.log("hello Fquery");
+            $f("#btn1").click(function(){
+                console.log($f("#btn1").attr("value"));
+                $f(this).attr("class","hello");
+            })
+            $f(".btn1").click(function(){
+                console.log(2)
+            })
+            $f("span").click(function(){
+                console.log(3)
+            })
+            $f("#btn1").css({
+                "background":"#fff",
+                "color":"#000",
+                "border":"none",
+            }).click(function(){
+                console.log(1);
+            })
+        })
+
+    </script>
+</head>
+<body>
+<div>
+    <input type="button" id="btn1" value="按钮">
+    <input type="button" class="btn1" value="按钮">
+    <span >按钮</span>
+
+</div>
+</body>
+</html>

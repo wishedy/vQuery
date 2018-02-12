@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>闭包函数实现索引值的得到</title>
+    <script>
+        window.onload = function(){
+            var aInput = document.getElementsByTagName("input");
+            var i = 0;
+            for(i = 0;i<aInput.length;i++){
+                /*(function addClick(obj){
+                    var count = 0;
+                    obj.onclick = function(){
+                        console.log(count++);
+                    }
+                }(aInput[i]))*/
+                aInput[i].onclick = (function(count){
+                    return function(){
+                        console.log(count++);
+                    }
+                })(0)
+            }
+            }
+
+
+    </script>
+</head>
+<body>
+<input type="button" id="btn1" value="按钮1"/>
+<input type="button" id="btn2" value="按钮2"/>
+<input type="button" id="btn3" value="按钮3"/>
+<input type="button" id="btn4" value="按钮4"/>
+</body>
+</html>

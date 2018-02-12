@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<style>
+			header{ height:50px; background: #900;}
+			nav{ height: 35px; background: #666666; line-height: 35px; color: #fff; font-size: 24px; letter-spacing:20px ;}
+			nav i{}
+			footer{ height: 50px; background: #ccc;}
+			.carSum{ background: #666; color: #fff;}
+		</style>
+		<link href="iconfont/iconfont.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<header><button id="showCar">查看购物车</button><span class="carSum"></span></header>
+		<nav></nav>
+		<article>
+			<div id="mainbox"></div>
+		</article>
+		<footer></footer>
+		
+		<script type="text/javascript" src="../bags/jquery-1.11.3.min.js" ></script>
+		<script type="text/javascript" src="script/shoping.js" ></script>
+		<script>
+		/*
+		 * 开发员：徐晨
+		 * 开发模块：商品模块
+		 * 命名空间：productMod
+		 * 方法：
+		 * getClass()
+		 * getProd()
+		 * 开发时间：********
+		 * 更新时间：
+		 * 版本号：
+		 */
+		productMod={
+			$mainbox:$("#mainbox"),
+			
+		}
+			$(function(){
+				productMod.getClass();
+				$("#showCar").on("click",function(){
+					window.location.href="car.html";
+				})
+				Shoping.getCar({
+					userID:"xc",
+					$box:$(".carSum")
+				});
+			})
+			
+			productMod.getClass=function(){
+				$.get("http://datainfo.duapp.com/shopdata/getclass.php",function(data){
+					var $nav=$("nav");
+					if(data){
+						var thisdata=eval(data);
+						createMenu($nav,thisdata);
+						//console.log(data);
+					}else{
+						console.log("error"+data);
+					}
+					
+					function createMenu($nav,thisdata){
+						for(var i=0;i<thisdata.length;i++){
+							var $menu=$("<i class='iconfont'>"+thisdata[i].icon+"</i>");
+							//console.log(thisdata[i].classID);
+							$menu[0].classID=thisdata[i].classID;
+							$menu.on("click",function(){
+								//alert(this.classID);
+								productMod.getProd({
+									classID:this.classID,
+									callback:function(data){
+										console.log(data);
+										for(var i=0;i<data.length;i++){
+											var prodBox=$("<div>"+data[i].goodsName+"</div>");
+											prodBox[0].goodsID=data[i].goodsID;
+											productMod.$mainbox.append(prodBox);
+											prodBox.on("click",function(){
+												Shoping.updataCar({
+													userID:"xc",
+													goodsID:this.goodsID,
+													number:1,
+													callback:function(data){
+														console.log(data);
+													}
+												})
+											})
+										}
+										
+									}
+								});
+							})
+							$nav.append($menu);
+						}
+					}
+				})
+			}
+			
+			/*
+			 opt:
+			 {
+			 	classID:通过类ID搜索商品，获得列表（可选）	
+			 	goodsID:通过商品ID搜索商品（可选，优先级高）
+				pageCode:显示第几组数据索引（默认0）每组数据显示10条
+				linenumber:每组数据需要显示的条目（默认10，可选）
+				callback:function(){}回掉函数
+			 }
+			 * */
+			productMod.getProd=function(opt){
+				console.log(opt.classID);
+				$.ajax({
+					url:"http://datainfo.duapp.com/shopdata/getGoods.php",
+					data:{
+						classID:opt.classID?opt.classID:"",
+			 			goodsID:opt.goodsID?opt.goodsID:"",
+						pageCode:opt.pageCode?opt.pageCode:"",
+						linenumber:opt.linenumber?opt.linenumber:6
+					},
+					dataType:"jsonp",
+					success:function(data){
+						if(opt.callback){
+							opt.callback(data);
+						}
+					}
+				})
+			}
+		</script>
+	</body>
+</html>

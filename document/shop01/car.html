@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+	</head>
+	<body>
+		<div id="topBox">商品总数：<span id="numberSum"></span>总价：<span id="priceSum"></span></div>
+		<div id="mainbox"></div>
+		
+		<script type="text/javascript" src="../bags/jquery-1.11.3.min.js" ></script>
+		<script type="text/javascript" src="script/shoping.js" ></script>
+		<script>
+			$(function(){
+				var $mainbox=$("#mainbox");
+				Shoping.getCar({
+					userID:"xc",
+					callback:function(data){
+						if(data){
+							for(var i=0;i<data.length;i++){
+								addCt(i,data[i],$mainbox);
+							}
+//							$.each(data,function(i){
+//								
+//							})
+						}
+					}
+				})
+			})
+			function addCt(i,data,$mainbox){
+				var $box=$("<div>"+data.goodsName+"</div>");
+				var $subBtn=$("<button>-</button>");
+				var $addBtn=$("<button>+</button>");
+				var $sum=$("<span>");
+				var $deleteBtn=$("<button>delete</button>");
+				$sum.text(data.number);
+				$box.append($subBtn).append($sum).append($addBtn).append($deleteBtn);
+				$mainbox.append($box);
+				
+				$deleteBtn.on("click",function(){
+					//console.log(data.goodsID);
+					Shoping.updataCar({
+						userID:"xc",
+						goodsID:data.goodsID,
+						number:0,
+						callback:function(data){
+							if(data){
+								$box.remove();
+							}else{
+								console.log("删除失败！");
+							}
+						}
+					})
+				})
+				
+				$addBtn.on("click",function(){
+					var sum=parseInt($sum.text());
+					sum++;
+					Shoping.updataCar({
+						userID:"xc",
+						goodsID:data.goodsID,
+						number:sum,
+						callback:function(data){
+							if(data){
+								$sum.text(sum);
+							}else{
+								console.log("数据提交失败！");
+							}
+						}
+					})
+				})
+			}
+		</script>
+	</body>
+</html>
